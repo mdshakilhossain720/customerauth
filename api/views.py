@@ -4,7 +4,12 @@ from .serilazers import StudentSerlazers
 from rest_framework import viewsets
 from rest_framework.authentication import BaseAuthentication,SessionAuthentication
 from.custompermission import MyPermission
-from api.customauth import Customauthcation
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.authentication import SessionAuthentication
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.throttling import AnonRateThrottle,UserRateThrottle
+from .throutilling import JackRateThrouting
+
 from rest_framework.permissions import IsAuthenticated,AllowAny,IsAuthenticatedOrReadOnly,DjangoModelPermissions
 
 
@@ -13,9 +18,10 @@ from rest_framework.permissions import IsAuthenticated,AllowAny,IsAuthenticatedO
 class StudentModelViewSet(viewsets.ModelViewSet):
     queryset=Student.objects.all()
     serializer_class=StudentSerlazers
-    authentication_classes=[Customauthcation]
-    permission_classes=[IsAuthenticated]
-    
+    authentication_classes=[SessionAuthentication]
+    permission_classes=[IsAuthenticatedOrReadOnly]
+    throttle_classes=[AnonRateThrottle,UserRateThrottle,UserRateThrottle]
+
     # authentication_classes=[SessionAuthentication]
     # permission_classes=[MyPermission]
     #permission_classes=[IsAuthenticated]
